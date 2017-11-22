@@ -1,7 +1,7 @@
 # Concourse PhraseApp Resource
 A concourse resource that triggers on changes in PhraseApp
 
-##Usage
+## Usage
 ``` yaml
 resource_types:
 - name: phraseapp-resource
@@ -32,7 +32,7 @@ jobs:
     - get: some-git-repo
     - task: update translations
       file: repo/ci/update.yml
-    - put: repo
+    - put: some-git-repo
       params:
         repository: modified-repo
 ```

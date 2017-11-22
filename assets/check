@@ -1,0 +1,9 @@
+#!/bin/bash
+set -o errexit
+
+STDIN=$(cat -)
+
+ACCESS_TOKEN="$(jq -r '.source | .access_token' <(echo "$STDIN"))"
+PROJECT_ID="$(jq -r '.source | .project_id' <(echo "$STDIN"))"
+
+curl -sS -H "Authorization: token $ACCESS_TOKEN" "https://api.phraseapp.com/api/v2/projects/$PROJECT_ID" | jq '[{updated_at: .updated_at}]'

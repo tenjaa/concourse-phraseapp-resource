@@ -5,3 +5,6 @@ RUN set -ex \
     jq \
     bash \
     curl
+
+ADD assets/ /opt/resource/
+RUN chmod +x /opt/resource/*

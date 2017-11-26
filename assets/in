@@ -1,3 +1,6 @@
 #!/bin/bash
+set -o errexit
 
-echo "{}"
+STDIN=$(cat -)
+
+jq -r '{version: .version}' <(echo "$STDIN")

@@ -5,5 +5,19 @@ STDIN=$(cat -)
 
 ACCESS_TOKEN="$(jq -r '.source | .access_token' <(echo "$STDIN"))"
 PROJECT_ID="$(jq -r '.source | .project_id' <(echo "$STDIN"))"
+VERSION="$(jq -r '.version.updated_at' <(echo "$STDIN"))"
 
-curl -sS -H "Authorization: token $ACCESS_TOKEN" "https://api.phraseapp.com/api/v2/projects/$PROJECT_ID" | jq '[{updated_at: .updated_at}]'
+UPDATED_AT="$(curl -sS -H "Authorization: token $ACCESS_TOKEN" "https://api.phraseapp.com/api/v2/projects/$PROJECT_ID" | jq -r '.updated_at')"
+
+if [ -z "$UPDATED_AT" ] || [ $UPDATED_AT == "null" ]; then
+  >&2 echo "ERROR: No version found from phraseapp."
+  exit 1
+fi
+
+if [ -z "$VERSION" ] || [ $VERSION == "null" ]; then
+  >&2 echo "INFO: Old version not found"
+  jq -n --arg u "$UPDATED_AT" '[{updated_at: $u}]'
+else
+  >&2 echo "INFO: Old version is $VERSION"
+  jq -n --arg u "$UPDATED_AT" --arg o "$VERSION" '[{updated_at: $o},{updated_at: $u}]'
+fi

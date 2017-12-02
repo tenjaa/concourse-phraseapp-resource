@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.6
 
 RUN set -ex \
     && apk add --no-cache ca-certificates \

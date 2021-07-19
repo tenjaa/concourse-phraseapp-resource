@@ -15,7 +15,7 @@ resources:
     type: git
     source:
       uri: some-url-to-a-git-repo
-      branch: master
+      branch: main
       username: your-username
       password: your-password
   - name: phraseapp

@@ -8,11 +8,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.3.4
+    - uses: actions/checkout@v6.0.2
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1.5.0
+      uses: docker/setup-buildx-action@v3.12.0
     - name: Build and push Docker image
-      uses: docker/build-push-action@v2.6.1
+      uses: docker/build-push-action@v6.19.2
       with:
         context: .
         load: true
@@ -21,7 +21,7 @@ jobs:
       run: |
         docker save tenjaa/concourse-phraseapp-resource:${{ github.sha }} > concourse-phraseapp-resource.tar
     - name: Pass image to next job
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v6
       with:
         name: image
         path: concourse-phraseapp-resource.tar
@@ -30,23 +30,23 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v7
       with:
         name: image
     - run: |
         docker load < concourse-phraseapp-resource.tar
-    - uses: docker/login-action@v1.10.0
+    - uses: docker/login-action@v3.7.0
       with:
         username: tenjaa
         password: ${{ secrets.docker_password }}
     - name: Login to Public ECR
-      uses: docker/login-action@v1.10.0
+      uses: docker/login-action@v3.7.0
       with:
         registry: public.ecr.aws
         username: ${{ secrets.ECR_ACCESS_KEY_ID }}
         password: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
     - name: Login to GitHub Container Registry
-      uses: docker/login-action@v1.10.0
+      uses: docker/login-action@v3.7.0
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}

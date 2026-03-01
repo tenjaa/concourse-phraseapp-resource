@@ -26,7 +26,7 @@ jobs:
       run: |
         docker save tenjaa/concourse-phraseapp-resource:${{ github.sha }} > concourse-phraseapp-resource.tar
     - name: Pass image to next job
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: image
         path: concourse-phraseapp-resource.tar
@@ -35,7 +35,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v7
+    - uses: actions/download-artifact@v8
       with:
         name: image
     - run: |

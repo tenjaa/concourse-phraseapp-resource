@@ -40,7 +40,7 @@ jobs:
         name: image
     - run: |
         docker load < concourse-phraseapp-resource.tar
-    - uses: docker/login-action@v4.0.0
+    - uses: docker/login-action@v4.1.0
       with:
         username: tenjaa
         password: ${{ secrets.docker_password }}
@@ -49,11 +49,11 @@ jobs:
         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
         aws-region: us-east-1
     - name: Login to Public ECR
-      uses: docker/login-action@v4.0.0
+      uses: docker/login-action@v4.1.0
       with:
         registry: public.ecr.aws
     - name: Login to GitHub Container Registry
-      uses: docker/login-action@v4.0.0
+      uses: docker/login-action@v4.1.0
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
